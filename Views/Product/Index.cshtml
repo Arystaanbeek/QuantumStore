@@ -1,0 +1,52 @@
+﻿@model QuantumStore.Models.ViewModels.IndexViewModel
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "_Layout";
+}
+
+<form method="get" asp-controller="Product" asp-action="Index">
+    <div class="form-group">
+        <label>Filter::</label>
+        <select name="orderBy" class="form-control w-25 mt-2">
+            <option value="" class="m-1">Sort</option>
+            <option value="1" class="m-1">By name</option>
+            <option value="2" class="m-1">By description</option>
+            </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Apply</button>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var product in Model.Product)
+    {
+        <a class="text-decoration-none text-black" asp-controller="Product" asp-action="About" asp-route-id="@product.Id">
+            <div class="card">
+                <img src="@product.ImgSrc" class="card-img-top" alt="Picture">
+                <div class="card-body">
+                    <h5 class="card-title">Name: @product.Name</h5>
+                    <p class="card-text">Description: @product.Description</p>
+                    <p class="card-text">Price: @product.Price.ToString("0.##") тг.</p>
+                    <p class="card-text">User: @product.User.Name</p>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<div class="pt-1">
+    @if (Model.Pagination.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-currentPage="@(Model.Pagination.PageNumber-1)" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Назад
+        </a>
+    }
+    @if (Model.Pagination.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-currentPage="@(Model.Pagination.PageNumber+1)" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+            Вперед
+        </a>
+    }
+</div>

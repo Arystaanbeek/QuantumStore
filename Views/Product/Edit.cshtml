@@ -1,0 +1,16 @@
+﻿@model QuantumStore.Models.ViewModels.CreateViewModel
+@{
+    ViewBag.Title = "Edit the product";
+    Layout = "_Layout";
+}
+<form method="post" asp-controller="Product" asp-action="Edit" >
+    <div class="row text-center">
+        <input asp-for="@Model.Product.Id" type="hidden" />
+        <input class="mb-2" type="text" value="" asp-for="@Model.Product.Name" placeholder="Name" required/>
+        <input class="mb-2" type="text" value="" asp-for="@Model.Product.Description" placeholder="About" required/>
+        <input class="mb-2" type="number" value="" asp-for="@Model.Product.Price" placeholder="Price" required/>
+        <input class="mb-2" type="text" value="" asp-for="@Model.Product.ImgSrc" placeholder="Link for picture" required/>
+        <button type="submit" class="btn btn-primary">Publish</button>
+    </div>
+</form>
+

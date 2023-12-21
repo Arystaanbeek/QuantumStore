@@ -1,0 +1,50 @@
+﻿@model QuantumStore.Models.ViewModels.AboutViewModel
+
+@{
+    ViewBag.Title = "Подробнее о товаре";
+    Layout = "_Layout";
+}
+<div class="w-20 aboutsettings">
+    <div class="card">
+        <img src="@Model.Product.ImgSrc" class="card-img-top" alt="Фото">
+        <div class="card-body text-center">
+            <h5 class="card-title">Name: @Model.Product.Name</h5>
+            <p class="card-text">About: @Model.Product.Description</p>
+            <p class="card-text">Price: @Model.Product.Price.ToString("0.##") тг.</p>
+            <p class="card-text">User:@Model.Product.User.Name</p>
+            @if (Model.Product.User.Email == User.Identity.Name)
+            {
+                <div class="d-flex justify-content-around">
+                    <a class="btn btn-primary m-1" asp-action="Edit" asp-route-id="@Model.Product.Id">Edit</a>
+                    <form method="post" asp-action="Delete" asp-route-id="@Model.Product.Id">
+                        <button type="submit" class="btn btn-outline-danger m-1">Delete</button>
+                    </form>
+                </div>
+            }
+            else if(User.Identity.IsAuthenticated)
+            {
+                <form method="post" asp-controller="Comment" asp-action="SendComment" asp-route-productId="@Model.Product.Id">
+                    <input class="mb-2" type="text" name="CommentContext"/>
+                    <button class="btn btn-primary m-1" type="submit">Send</button>
+                </form>
+            }
+        </div>
+        <h2>Commentaries:</h2>
+            @foreach (var comment  in Model.Comment)
+            {
+                <div class="border border-dark m-1">
+                    <div class="  justify-content-between d-flex">
+                        <h2 class="card-text text-start">@comment.User.Name</h2>
+                        @if (comment.User.Email == User.Identity.Name)
+                        {
+                            <form method="post" asp-controller="Comment" asp-action="DeleteComment" asp-route-id="@comment.Id">
+                                <button type="submit" class="btn">Delete</button>
+                            </form>
+                        }
+                    </div>
+                    <p class="card-text">@comment.CommentText</p>
+                </div>
+            }
+        
+    </div>
+</div>
